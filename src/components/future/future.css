@@ -1,0 +1,283 @@
+li#future {
+    height: auto;
+    display: block;
+    position: relative;
+}
+
+#future-container{
+    display: flex;
+    position: relative;
+    max-width: 100%;
+    flex-wrap: wrap;
+    color: white;
+    background-image: url("../../../public/resource/modi_bg2.jpg");
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    padding-bottom: 20vh;
+    border-bottom: 5px groove rgb(155,117, 86);
+}
+
+
+#future-container > * {
+    width: 10%;
+}
+
+#future-container h1{
+    font-size: 70px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 60px;
+    width: 100%;
+    text-align: center;
+    color:orange;
+}
+
+.primary-champ{
+    list-style: none;
+    padding: 0;
+    margin-top: 50px;
+}
+
+#desc-box{
+    flex: 0 0 45%;
+    position: relative;
+}
+
+.primary-champ li img {
+    height: inherit;
+    border-radius: inherit;
+    width: inherit;
+}
+
+.primary-champ li{
+    position: relative;
+    color: rgb(160, 255, 250);
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.primary-champ li:hover{
+    cursor: pointer;
+}
+
+div.ptext {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+    height: inherit;
+    width: inherit;
+    border-radius: 50px;
+    z-index: 9;
+}
+
+div.ptext p {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 50px;
+    display: none;
+    pointer-events: none;
+}
+
+div#img-box {
+    flex: 0 0 45%;
+    position: relative;
+}
+
+#border-img, #border-desc, #champImg-ft, #desc-ft{
+    position: absolute;
+    height: 80%;
+    width: 55%;
+    left: 20%;
+    right: 0;
+    top: 12%;
+}
+
+#champImg-ft{
+    height: 77%;
+    width: 50.5%;
+    left: 22.5%;
+    top: 13%;
+}
+#border-img{
+    z-index: 9;
+}
+
+#desc-ft{
+    font-weight: bold;
+    color: lightblue;
+    height: 70%;
+    width: 43%;
+    padding-left: 40px;
+    top: 20%;
+    left: 21%;
+    overflow: hidden;
+    position: relative;
+}
+
+#skillset-ft{
+    margin-top: 20px;
+    display: none;
+    padding: 0;
+    width: 100%;
+}
+
+div#skill-desc-ft {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    color:lightblue;
+}
+
+
+
+#desc-container{
+    display: block;
+    width: 100%;
+    height: 180px;
+    position: absolute;
+    overflow-y: scroll;
+    margin-right: -50px;
+    padding-right: 50px;
+    left:0;
+    border-bottom: 5px groove rgb(155,117, 86);
+}
+
+#skill-img-ft{
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    z-index: 9;
+}
+
+#skill-img-ft li{
+    display: inline-block;
+    width: 18%;
+    margin: 1px 2px;
+    height: auto;
+}
+
+#skillset-ft li:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+#skillset-ft li img{
+    width: 100%;
+    height: 100%;
+}
+
+#video-container{
+    position: absolute;
+    width: 85%;
+    height: 45%;
+    bottom: 0px;
+    z-index: 9;
+}
+
+#video-ft{
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    height: auto;
+}
+
+#video-title{
+    position: absolute;
+    display: block;
+    margin: 0 auto;
+    top: 33px;
+    left: 0;
+    right: 0;
+    width: 50%;
+    text-align: center;
+    color: orange;
+    font-size: 17px;
+    background-color: rgb(30,38,43);
+    border: 3px solid;
+    border-image-source: linear-gradient(rgb(0, 171, 162), rgb(11, 89, 128));
+    border-image-slice: 1;
+}
+
+#video-title:hover{
+    color: rgb(0, 221, 210);
+    border-image-source: linear-gradient(rgb(0, 230, 218), rgb(16, 124, 179))
+}
+
+#tutorial:hover{
+    cursor: pointer;
+}
+
+#gage{
+    flex-direction: column;
+}
+
+#button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 50px;
+    border-bottom: 5px groove rgb(155,117, 86);
+}
+
+.button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 40%;
+    height:25px;
+    background-color: rgb(30,38,43);
+    border: 3px solid;
+    border-image-source: linear-gradient(rgb(0, 171, 162), rgb(11, 89, 128));
+    border-image-slice: 1;
+    z-index: 9;
+    font-size: 15px;
+    color: orange;
+}
+
+.button:hover{
+    cursor: pointer;
+    color: rgb(0, 221, 210);
+    border-image-source: linear-gradient(rgb(0, 221, 210), rgb(17, 130, 187));
+}
+
+/* #appearLeftRight{
+    position: absolute;
+    top: 0; 
+    bottom: 0; 
+    right: 0;
+    width: 0%;
+    background-color: white;
+    -moz-animation: showHide 2s ease-in;
+    -webkit-animation: showHide 2s ease-in; 
+    -ms-animation: showHide 2s ease-in;
+    -o-animation: showHide 2s ease-in; 
+    animation: showHide 2s ease-in;
+}
+
+@-webkit-keyframes showHide { 
+    0% {width:100%}
+    100% {width:0%;}
+}
+@-moz-keyframes showHide { 
+    0% {width:100%}
+    100% {width:0%;}
+}
+@-ms-keyframes showHide { 
+    0% {width:100%}
+    100% {width:0%;}
+}
+@-o-keyframes showHide { 
+    0% {width:100%}
+    100% {width:0%;}
+}
+@keyframes showHide {
+    0% {width:100%}
+    100% {width:0%;}
+} */
