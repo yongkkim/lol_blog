@@ -31,7 +31,7 @@ li#contact {
     background-image: url("../../../public/resource/contact_bg.jpg");
     background-attachment: fixed;
     background-size: 100% 100%;
-    padding: 15vh 0 30vh 0;
+    padding: 15vh 0;
 }
 #info-container{
     list-style: none;
@@ -62,7 +62,7 @@ li#contact {
 
 #copied{
     display: none;
-    border: 3px solid;
+    border-bottom: 3px solid;
     border-image-source: linear-gradient(to bottom right, rgb(225, 240, 255), rgb(0, 132, 255), rgb(194, 224, 255));
     border-image-slice: 1;
     width: 30%;

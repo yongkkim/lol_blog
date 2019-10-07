@@ -117,7 +117,7 @@ class Future extends Component {
 
         return (
             <div id="future-container">
-                <h1>My Future Champions</h1>
+                <h1>Champions that I want to play</h1>
                 <div id="desc-box">
                     <div id="desc-ft">
                         {this.state.clicked && <div id="button-container">
