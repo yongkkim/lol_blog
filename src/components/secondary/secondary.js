@@ -79,6 +79,7 @@ class Secondary extends Component {
         let circle = document.getElementsByClassName("circle-bg");
         circle[0].src = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
         circle[0].style.zIndex = "8";
+        circle[0].style.opacity = "0.8";
 
         circle[1].style.backgroundColor = "black";
         circle[1].style.opacity = "1";
