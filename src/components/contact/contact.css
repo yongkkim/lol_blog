@@ -62,9 +62,6 @@ li#contact {
 
 #copied{
     display: none;
-    border-bottom: 3px solid;
-    border-image-source: linear-gradient(to bottom right, rgb(225, 240, 255), rgb(0, 132, 255), rgb(194, 224, 255));
-    border-image-slice: 1;
     width: 30%;
     height: 25px;
     text-align: center;
@@ -76,6 +73,10 @@ li#contact {
     margin-top: 30px;
     opacity: 0;
     animation: appear 10s;
+}
+
+#copied img{
+    width:50px;
 }
 
 @keyframes appear{

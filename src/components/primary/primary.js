@@ -15,7 +15,7 @@ class Primary extends Component {
     }
 
     showName = (e) => {
-        e.target.style.backgroundColor = "rgb(0,0,0,0.5)";
+        e.target.style.backgroundColor = "rgba(0,0,0,0.5)";
         e.target.firstChild.style.display = "block";
     }
 

@@ -20,15 +20,6 @@ class Contact extends Component {
         document.getElementById("copied").style.display = "block";
     }
 
-    // indicator = () => {
-    //     let arrow = document.createElement("div");
-    //     arrow.style.width = "0";
-    //     arrow.style.height = "0";
-    //     arrow.style.borderTop = "10px solid transparent";
-    //     arrow.style.borderbottom = "10px solid transparent";
-    //     arrow.style.borderLeft = "10px solid white";    
-    // }
-
     render() {
         return (
             <div id="contact-container">
@@ -39,7 +30,7 @@ class Contact extends Component {
                         <div id="profile-container">
                             <img id="profile-pic"></img>
                             <div id="username" onClick={e => this.copyText(e)}>dragonsoup2</div>
-                            <div id="copied">Copied</div>
+                            <div id="copied">Copied <img src={require("../../../public/resource/check.png")} /></div>
                         </div>
                     </li>
                 </ul>

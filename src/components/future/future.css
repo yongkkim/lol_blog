@@ -32,7 +32,7 @@ li#future {
     color:orange;
 }
 
-.primary-champ{
+.primary-champ-ft{
     list-style: none;
     padding: 0;
     margin-top: 50px;
@@ -43,13 +43,13 @@ li#future {
     position: relative;
 }
 
-.primary-champ li img {
+.primary-champ-ft li img {
     height: inherit;
     border-radius: inherit;
     width: inherit;
 }
 
-.primary-champ li{
+.primary-champ-ft li{
     position: relative;
     color: rgb(160, 255, 250);
     height: 100px;
@@ -59,11 +59,11 @@ li#future {
     margin-bottom: 20px;
 }
 
-.primary-champ li:hover{
+.primary-champ-ft li:hover{
     cursor: pointer;
 }
 
-div.ptext {
+div.ptext-ft {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -76,7 +76,7 @@ div.ptext {
     z-index: 9;
 }
 
-div.ptext p {
+div.ptext-ft p {
     position: absolute;
     right: 0;
     left: 0;

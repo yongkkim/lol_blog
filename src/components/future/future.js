@@ -15,7 +15,7 @@ class Future extends Component {
     }
 
     showName = (e) => {
-        e.target.style.backgroundColor = "rgb(0,0,0,0.5)";
+        e.target.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
         e.target.firstChild.style.display = "block";
     }
 
@@ -107,8 +107,8 @@ class Future extends Component {
         Object.keys(this.props.images).map((num, i) => {
             champs.push(
                 <li key={i}>
-                    <img key={i + "_img"} src={this.props.images[num].url} />
-                    <div key={i + "_text"} className="ptext" id={"ptext" + i}
+                    <img key={i + "_img_ft"} src={this.props.images[num].url} />
+                    <div key={i + "_text_ft"} className="ptext-ft" id={"ptext-ft" + i}
                         onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => this.showDesc(this.props.images[num].name)}>
                         <p>{this.props.images[num].name}</p>
                     </div>
@@ -142,7 +142,7 @@ class Future extends Component {
                     </div>
                     <img id="border-desc" src={require("../../../public/resource/modi_challenger.png")}></img>
                 </div>
-                <ul className="primary-champ">
+                <ul className="primary-champ-ft">
                     {champs}
                 </ul>
                 <div id="img-box">
