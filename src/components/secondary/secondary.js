@@ -14,21 +14,21 @@ class Secondary extends Component {
         }
     }
 
-    componentWillMount() {
-        Object.keys(champDesc.secondary).forEach(name => {
-            axios.get("http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
-                .then(response => {
-                    let skillset = {
-                        [name]: response.data.data[name]
-                    }
-                    let champSkill = Object.assign(skillset, this.state.skills);
+    // UNSAFE_componentWillMount() {
+    //     Object.keys(champDesc.secondary).forEach(name => {
+    //         axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
+    //             .then(response => {
+    //                 let skillset = {
+    //                     [name]: response.data.data[name]
+    //                 }
+    //                 let champSkill = Object.assign(skillset, this.state.skills);
 
-                    this.setState({ skills: champSkill });
-                });
-        })
-    }
+    //                 this.setState({ skills: champSkill });
+    //             });
+    //     })
+    // }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.images.length !== newProps.images.length) {
             let allLi = document.getElementsByClassName("circle");
 
@@ -65,19 +65,19 @@ class Secondary extends Component {
             return (
                 <li key={name + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
+                        src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
                 </li>
             )
         })
 
         passiveAndSkills.push(<li key={name + "-passive"} id={this.state.skills[name].passive.name}>
             <img onClick={e => this.showSkillDesc(e, this.state.skills[name].passive.description)}
-                src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[name].passive.image.full}></img>
+                src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[name].passive.image.full}></img>
         </li>);
 
         document.getElementById("desc-sc").innerHTML = champDesc.secondary[name].desc;
         let circle = document.getElementsByClassName("circle-bg");
-        circle[0].src = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
+        circle[0].src = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
         circle[0].style.zIndex = "8";
         circle[0].style.opacity = "0.8";
 
@@ -86,7 +86,7 @@ class Secondary extends Component {
         circle[1].style.zIndex = "7"
 
         for (let i = 0; i < circle.length; i++) {
-            circle[i].style.height = "55%";
+            circle[i].style.height = "80vh";
             circle[i].style.borderRadius = "50%";
             circle[i].style.top = "25%";
             circle[i].style.width = "37%";
@@ -144,6 +144,18 @@ class Secondary extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.images);
+        Object.keys(champDesc.secondary).forEach(name => {
+            axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
+                .then(response => {
+                    let skillset = {
+                        [name]: response.data.data[name]
+                    }
+                    let champSkill = Object.assign(skillset, this.state.skills);
+
+                    this.setState({ skills: champSkill });
+                });
+        })
     }
 
     render() {

@@ -19,9 +19,27 @@ class Future extends Component {
         e.target.firstChild.style.display = "block";
     }
 
-    componentWillMount() {
+    // UNSAFE_componentWillMount() {
+    //     Object.keys(champDesc.future).forEach(name => {
+    //         axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
+    //             .then(response => {
+    //                 let skillset = {
+    //                     [name]: response.data.data[name]
+    //                 }
+    //                 let champSkill = Object.assign(skillset, this.state.skills);
+
+    //                 this.setState({ skills: champSkill });
+    //             });
+    //     })
+    // }
+
+    componentDidMount() {
+        if (!this.state.clicked) {
+            document.getElementById("champImg-ft").style.display = "none";
+        }
+
         Object.keys(champDesc.future).forEach(name => {
-            axios.get("http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
+            axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
                 .then(response => {
                     let skillset = {
                         [name]: response.data.data[name]
@@ -31,12 +49,6 @@ class Future extends Component {
                     this.setState({ skills: champSkill });
                 });
         })
-    }
-
-    componentDidMount() {
-        if (!this.state.clicked) {
-            document.getElementById("champImg-ft").style.display = "none";
-        }
     }
 
     showDesc = (name) => {
@@ -51,19 +63,19 @@ class Future extends Component {
             return (
                 <li key={newName + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
+                        src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
                 </li>
             )
         })
 
         passiveAndSkills.push(<li key={newName + "-passive"} id={this.state.skills[newName].passive.name}>
             <img onClick={e => this.showSkillDesc(e, this.state.skills[newName].passive.description)}
-                src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[newName].passive.image.full}></img>
+                src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[newName].passive.image.full}></img>
         </li>);
 
         document.getElementById("desc-ft").getElementsByTagName("p")[0].innerHTML = champDesc.future[newName].desc;
         document.getElementById("champImg-ft").style.display = "block";
-        document.getElementById("champImg-ft").src = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + newName + "_0.jpg";
+        document.getElementById("champImg-ft").src = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + newName + "_0.jpg";
         document.getElementById("video-ft").src = champDesc.future[newName].video;
 
         this.setState({

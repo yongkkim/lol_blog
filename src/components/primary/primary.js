@@ -19,7 +19,32 @@ class Primary extends Component {
         e.target.firstChild.style.display = "block";
     }
 
-    componentWillMount() {
+    // UNSAFE_componentWillMount() {
+    //     Object.keys(champDesc.primary).forEach(name => {
+
+    //         let newName;
+    //         if (name !== "LeBlanc") {
+    //             newName = name;
+    //         } else {
+    //             newName = "Leblanc";
+    //         }
+    //         axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
+    //             .then(response => {
+    //                 let skillset = {
+    //                     [name]: response.data.data[newName]
+    //                 }
+    //                 let champSkill = Object.assign(skillset, this.state.skills);
+
+    //                 this.setState({ skills: champSkill });
+    //             });
+    //     })
+    // }
+
+    componentDidMount() {
+        if (!this.state.clicked) {
+            document.getElementById("champImg").style.display = "none";
+        }
+
         Object.keys(champDesc.primary).forEach(name => {
 
             let newName;
@@ -28,7 +53,7 @@ class Primary extends Component {
             } else {
                 newName = "Leblanc";
             }
-            axios.get("http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
+            axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
                 .then(response => {
                     let skillset = {
                         [name]: response.data.data[newName]
@@ -40,12 +65,6 @@ class Primary extends Component {
         })
     }
 
-    componentDidMount() {
-        if (!this.state.clicked) {
-            document.getElementById("champImg").style.display = "none";
-        }
-    }
-
     showDesc = (name) => {
         if (event.target.parentNode.parentNode.id === "skill-img") {
             this.showSkillDesc(event, "");
@@ -55,22 +74,22 @@ class Primary extends Component {
 
         let url;
         if (name !== "LeBlanc") {
-            url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
+            url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
         } else {
-            url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Leblanc_0.jpg";
+            url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Leblanc_0.jpg";
         }
         let passiveAndSkills = this.state.skills[name].spells.map((skill, i) => {
             return (
                 <li key={name + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
+                        src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
                 </li>
             )
         })
 
         passiveAndSkills.push(<li key={name + "-passive"} id={this.state.skills[name].passive.name}>
             <img onClick={e => this.showSkillDesc(e, this.state.skills[name].passive.description)}
-                src={"http://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[name].passive.image.full}></img>
+                src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[name].passive.image.full}></img>
         </li>);
 
         document.getElementById("desc").getElementsByTagName("p")[0].innerHTML = champDesc.primary[name].desc;

@@ -7,7 +7,7 @@ class Contact extends Component {
     }
 
     componentDidMount() {
-        document.getElementById("profile-pic").src = "http://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/3551.png"
+        document.getElementById("profile-pic").src = "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/profileicon/3551.png"
     }
 
     copyText = (e) => {

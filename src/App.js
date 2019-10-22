@@ -20,14 +20,19 @@ class App extends Component {
 
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll);
-    }
 
-    componentWillMount() {
-        axios.get("http://ddragon.leagueoflegends.com/cdn/9.17.1/data/en_US/champion.json")
+        axios.get("https://ddragon.leagueoflegends.com/cdn/9.17.1/data/en_US/champion.json")
             .then(response => {
                 this.setState({ images: response.data.data });
             });
     }
+
+    // UNSAFE_componentWillMount() {
+    //     axios.get("https://ddragon.leagueoflegends.com/cdn/9.17.1/data/en_US/champion.json")
+    //         .then(response => {
+    //             this.setState({ images: response.data.data });
+    //         });
+    // }
 
     handleScroll = () => {
         let winScroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset;
@@ -65,7 +70,7 @@ class App extends Component {
         primary.forEach(p => {
             if (keys.indexOf(p) > -1) {
                 pImageURL.push({
-                    url: "http://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[p].image.full,
+                    url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[p].image.full,
                     name: this.state.images[p].name
                 });
             }
@@ -74,7 +79,7 @@ class App extends Component {
         secondary.forEach(s => {
             if (keys.indexOf(s) > -1) {
                 sImageURL.push({
-                    url: "http://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[s].image.full,
+                    url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[s].image.full,
                     name: this.state.images[s].name
                 });
             }
@@ -83,7 +88,7 @@ class App extends Component {
         future.forEach(f => {
             if (keys.indexOf(f) > -1) {
                 fImageURL.push({
-                    url: "http://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[f].image.full,
+                    url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + this.state.images[f].image.full,
                     name: this.state.images[f].name
                 });
             }
