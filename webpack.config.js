@@ -1,9 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: ['babel-polyfill', "./src/index.js"],
-    mode: "development",
     module: {
         rules: [
             {
@@ -17,7 +17,7 @@ module.exports = {
                 use: ["style-loader", "css-loader"]
             },
             {
-                test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,
+                test: /\.(jpg|woff|woff2|eot|ttf|svg|gif|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -41,5 +41,9 @@ module.exports = {
         publicPath: "http://localhost:3000/dist/",
         hotOnly: true
     },
-    plugins: [new webpack.HotModuleReplacementPlugin()]
+    plugins: [new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebPackPlugin({
+        template: "./public/index.html",
+        filename: "index.html"
+    })]
 };
