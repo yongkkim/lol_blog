@@ -31,8 +31,8 @@ module.exports = {
     },
     resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
-        path: path.resolve(__dirname, "dist/"),
-        publicPath: "/",
+        path: path.resolve(__dirname, "dist"),
+        // publicPath: "/",
         filename: "bundle.js"
     },
     devServer: {
@@ -43,6 +43,7 @@ module.exports = {
     },
     plugins: [new webpack.HotModuleReplacementPlugin(),
     new HtmlWebPackPlugin({
+        template: "./public/index.html",
         filename: "index.html"
     })]
 };
