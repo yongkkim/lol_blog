@@ -1,168 +1,106 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import { CSSTransition, ReactCSSTransisionGroup } from 'react-transition-group';
 import "./primary.css";
-import champDesc from "../champDesc/champDesc";
 
 class Primary extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
             clicked: false,
-            skills: {},
-            clickedChampSkills: "",
-            selectedChamp: ""
+            clickedChampSkills: this.props.clickedChampSkills,
+            selectedChamp: this.props.selectedChamp,
+            allGroup: [],
+            selectedGroup: [],
+            allTitle: this.props.title,
+            selectedTitle: this.props.title[0],
+            nthGroup: 0,
         }
     }
 
-    showName = (e) => {
-        e.target.style.backgroundColor = "rgba(0,0,0,0.5)";
-        e.target.firstChild.style.display = "block";
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.clicked !== this.state.clicked) {
+            this.setState({
+                clicked: nextProps.clicked,
+                selectedChamp: nextProps.selectedChamp,
+                clickedChampSkills: nextProps.clickedChampSkills
+            });
+        } else {
+            this.setState({
+                selectedChamp: nextProps.selectedChamp,
+                clickedChampSkills: nextProps.clickedChampSkills
+            });
+        }
     }
-
-    // UNSAFE_componentWillMount() {
-    //     Object.keys(champDesc.primary).forEach(name => {
-
-    //         let newName;
-    //         if (name !== "LeBlanc") {
-    //             newName = name;
-    //         } else {
-    //             newName = "Leblanc";
-    //         }
-    //         axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
-    //             .then(response => {
-    //                 let skillset = {
-    //                     [name]: response.data.data[newName]
-    //                 }
-    //                 let champSkill = Object.assign(skillset, this.state.skills);
-
-    //                 this.setState({ skills: champSkill });
-    //             });
-    //     })
-    // }
 
     componentDidMount() {
+        let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        if (/iPad|iPhone|iPod/.test(userAgent) && window.innerWidth < 450) {
+            document.getElementById("primary-container").style.webkitBackgroundSize = "100% 50%";
+        }
+
+        let allchampgroups = this.props.allChamps;
         if (!this.state.clicked) {
-            document.getElementById("champImg").style.display = "none";
+            this.setState({
+                allGroup: allchampgroups,
+                selectedGroup: allchampgroups[0],
+                nthGroup: 0
+            })
         }
-
-        Object.keys(champDesc.primary).forEach(name => {
-
-            let newName;
-            if (name !== "LeBlanc") {
-                newName = name;
-            } else {
-                newName = "Leblanc";
-            }
-            axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
-                .then(response => {
-                    let skillset = {
-                        [name]: response.data.data[newName]
-                    }
-                    let champSkill = Object.assign(skillset, this.state.skills);
-
-                    this.setState({ skills: champSkill });
-                });
-        })
     }
 
-    showDesc = (name) => {
-        if (event.target.parentNode.parentNode.id === "skill-img") {
-            this.showSkillDesc(event, "");
-        } else if (this.state.selectedChamp !== "") {
-            this.showOpinion();
-        }
-
-        let url;
-        if (name !== "LeBlanc") {
-            url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + name + "_0.jpg";
+    previousList = () => {
+        document.getElementById("champImg").style.opacity = "0"
+        if (this.state.nthGroup === 0) {
+            this.setState({
+                selectedGroup: this.props.allChamps[this.state.allGroup.length - 1],
+                nthGroup: this.state.allGroup.length - 1,
+                selectedTitle: this.state.allTitle[this.state.allGroup.length - 1],
+            }, this.props.clickedStatus())
         } else {
-            url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Leblanc_0.jpg";
+            this.setState({
+                selectedGroup: this.state.allGroup[this.state.nthGroup - 1],
+                nthGroup: this.state.nthGroup - 1,
+                selectedTitle: this.state.allTitle[this.state.nthGroup - 1],
+            }, this.props.clickedStatus())
         }
-        let passiveAndSkills = this.state.skills[name].spells.map((skill, i) => {
-            return (
-                <li key={name + "-skill" + i} id={skill.id}>
-                    <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
-                </li>
-            )
-        })
-
-        passiveAndSkills.push(<li key={name + "-passive"} id={this.state.skills[name].passive.name}>
-            <img onClick={e => this.showSkillDesc(e, this.state.skills[name].passive.description)}
-                src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[name].passive.image.full}></img>
-        </li>);
-
-        document.getElementById("desc").getElementsByTagName("p")[0].innerHTML = champDesc.primary[name].desc;
-        document.getElementById("champImg").style.display = "block";
-        document.getElementById("champImg").src = url;
-        document.getElementById("video").src = champDesc.primary[name].video;
-
-        this.setState({
-            clicked: true,
-            selectedChamp: name,
-            clickedChampSkills: passiveAndSkills
-        })
     }
 
-    hideName = (e) => {
-        e.target.style.backgroundColor = "unset";
-        e.target.firstChild.style.display = "none";
-    }
-
-    showSkill = () => {
-        document.getElementById("desc").getElementsByTagName("p")[0].style.display = "none";
-        document.getElementById("skillset").style.display = "block";
-        document.getElementById("skill-img").firstChild.firstChild.click();
-    }
-
-    showOpinion = () => {
-        document.getElementById("desc").getElementsByTagName("p")[0].style.display = "block";
-        document.getElementById("skillset").style.display = "none";
-    }
-
-    showSkillDesc = (e, desc) => {
-        document.getElementById("skill-desc").innerHTML = desc;
-        let allLi = e.target.parentNode.parentNode.getElementsByTagName("img");
-        for (let i = 0; i < allLi.length; i++) {
-            allLi[i].style.transform = "unset";
-            allLi[i].style.borderBottom = "unset"
+    nextList = () => {
+        document.getElementById("champImg").style.opacity = "0"
+        if (this.state.nthGroup === this.state.allGroup.length - 1) {
+            this.setState({
+                selectedGroup: this.state.allGroup[0],
+                nthGroup: 0,
+                selectedTitle: this.state.allTitle[0],
+            }, this.props.clickedStatus())
+        } else {
+            this.setState({
+                selectedGroup: this.state.allGroup[this.state.nthGroup + 1],
+                nthGroup: this.state.nthGroup + 1,
+                selectedTitle: this.state.allTitle[this.state.nthGroup + 1],
+            }, this.props.clickedStatus())
         }
-        e.target.style.transform = "scale(1.1)";
-        e.target.style.borderBottom = "3px solid whitesmoke";
     }
 
     render() {
-        // console.log(champDesc);
-        // console.log(this.state.skills);
-        let champs = [];
-
-        Object.keys(this.props.images).map((num, i) => {
-            champs.push(
-                <li key={i}>
-                    <img key={i + "_img"} src={this.props.images[num].url} />
-                    <div key={i + "_text"} className="ptext" id={"ptext" + i}
-                        onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => this.showDesc(this.props.images[num].name)}>
-                        <p>{this.props.images[num].name}</p>
-                    </div>
-                </li>);
-        })
-
         return (
-            <div id="primary-container">
-                <h1>My Best Champions</h1>
+            <div id="primary-container" className={this.state.nthGroup === 0 ? "one" : this.state.nthGroup === 1 ? "two" : "three"}>
+                <h1 id="title" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }}>{this.state.selectedTitle}</h1>
                 <div id="desc-box">
-                    <div id="desc">
-                        {this.state.clicked && <div id="button-container">
-                            <div className="button preference" onClick={e => this.showOpinion()}>Opinion</div>
-                            <div className="button skill" onClick={e => this.showSkill()}>Skillset</div>
-                        </div>}
-                        <p></p>
+                    <div id="desc" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }} className={this.state.clicked ? "display" : "none"}>
+                        <div id="button-container">
+                            <div className="button preference" onClick={e => this.props.showOpinion()}>Opinion</div>
+                            <div className="button skill" onClick={e => this.props.showSkill()}>Skillset</div>
+                        </div>
+                        <div id="opinion-container">
+                            <p id="opinion"></p>
+                        </div>
                         <div id="skillset">
                             <ul id="skill-img">
                                 {this.state.clickedChampSkills}
                                 <div id="desc-container">
-                                    <div id="skill-desc"></div>
-                                    {/* <div id="appearLeftRight"></div> */}
+                                    <div id="skill-desc" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }}></div>
                                 </div>
                             </ul>
                             <div id="video-container">
@@ -172,12 +110,13 @@ class Primary extends Component {
                             </div>
                         </div>
                     </div>
-                    <img id="border-desc" src={require("../../../public/resource/modi_challenger.png")}></img>
+                    <div className="left" onClick={e => { this.previousList() }}></div>
                 </div>
                 <ul className="primary-champ">
-                    {champs}
+                    {this.state.selectedGroup}
                 </ul>
                 <div id="img-box">
+                    <div className="right" onClick={e => { this.nextList() }}></div>
                     <img id="border-img" src={require("../../../public/resource/modi_challenger.png")}></img>
                     <img id="champImg"></img>
                 </div>

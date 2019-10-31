@@ -168,3 +168,13 @@ li#main {
     -o-animation: sub-t 3000ms ease-in;
     animation: sub-t 3000ms ease-in;
 }
+
+@media screen and (max-width: 425px){
+
+    li#main{margin-bottom: 0;}
+
+    #sub-title {
+        bottom: 150px;
+        font-size: 40px;
+    }
+}

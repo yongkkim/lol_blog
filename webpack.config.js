@@ -32,7 +32,8 @@ module.exports = {
     resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/",
+        // set publiPath to "./" for production
+        publicPath: "./",
         filename: "bundle.js"
     },
     devServer: {
@@ -42,8 +43,10 @@ module.exports = {
         hotOnly: true
     },
     plugins: [new webpack.HotModuleReplacementPlugin(),
+    // uncomment the below for production
     new HtmlWebPackPlugin({
         template: "./public/index.html",
         filename: "index.html"
-    })]
+    })
+    ]
 };

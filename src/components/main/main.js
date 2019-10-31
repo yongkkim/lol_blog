@@ -3,6 +3,18 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import "./main.css";
 
 class Main extends Component {
+
+    componentDidMount() {
+        let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Windows Phone must come first because its UA also contains "Android"
+
+        // iOS detection from: http://stackoverflow.com/a/9039885/177710
+        if (/iPad|iPhone|iPod/.test(userAgent) && window.innerWidth < 450) {
+            document.getElementById("sub-title").style.fontSize = "20px";
+        }
+    }
+
     render() {
         return (
             <div id="main-container">

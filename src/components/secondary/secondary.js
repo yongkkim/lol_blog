@@ -14,20 +14,6 @@ class Secondary extends Component {
         }
     }
 
-    // UNSAFE_componentWillMount() {
-    //     Object.keys(champDesc.secondary).forEach(name => {
-    //         axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + name + ".json")
-    //             .then(response => {
-    //                 let skillset = {
-    //                     [name]: response.data.data[name]
-    //                 }
-    //                 let champSkill = Object.assign(skillset, this.state.skills);
-
-    //                 this.setState({ skills: champSkill });
-    //             });
-    //     })
-    // }
-
     UNSAFE_componentWillReceiveProps(newProps) {
         if (this.props.images.length !== newProps.images.length) {
             let allLi = document.getElementsByClassName("circle");

@@ -9,26 +9,30 @@ li#primary {
     max-width: 100%;
     flex-wrap: wrap;
     color: white;
-    background-image: url("../../../public/resource/modi_bg.jpg");
     background-attachment: fixed;
     background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
     padding-bottom: 20vh;
     border-top: 5px groove rgb(155,117, 86);
     border-bottom: 5px groove rgb(155,117, 86);
+    -webkit-transition: .5s ease-in;
+    transition: .5s ease-in;
 }
 
 #primary-container > * {
     width: 10%;
 }
 
-#primary-container h1{
-    font-size: 70px;
+#title{
+    font-size: 80px;
     font-weight: bold;
     letter-spacing: 2px;
     margin: 60px;
     width: 100%;
     text-align: center;
-    color:orange;
+    color:white;
+    -webkit-transition: .4s ease-in;
+    transition: .4s ease-in;
 }
 
 .primary-champ{
@@ -55,9 +59,9 @@ li#primary {
     width: 100px;
     border-radius: 50px;
     background-color: white;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin: 0 auto;
 }
-
 .primary-champ li:hover{
     cursor: pointer;
 }
@@ -89,20 +93,24 @@ div#img-box {
     position: relative;
 }
 
-#border-img, #border-desc, #champImg, #desc{
+#border-img{
     position: absolute;
-    height: 80%;
+    height: 90%;
     width: 55%;
     left: 20%;
     right: 0;
-    top: 12%;
+    top: 50px;
 }
 
 #champImg{
-    height: 77%;
-    width: 50.5%;
+    position: absolute;
+    height: 85%;
+    width: 50%;
     left: 22.5%;
-    top: 13%;
+    top: 65px;
+    opacity: 0;
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
 }
 #border-img{
     z-index: 9;
@@ -111,13 +119,26 @@ div#img-box {
 #desc{
     font-weight: bold;
     color: lightblue;
-    height: 70%;
+    height: 80%;
     width: 43%;
     padding-left: 40px;
-    top: 20%;
-    left: 21%;
+    top: 60px;
+    left: 25%;
     overflow: hidden;
     position: relative;
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+}
+#opinion-container{
+    display: block;
+    width: 93%;
+    height: inherit;
+    position: absolute;
+    overflow-y: scroll;
+}
+#opinion{
+    height: inherit;
+    text-align: justify;
 }
 
 #skillset{
@@ -138,7 +159,7 @@ div#skill-desc {
 #desc-container{
     display: block;
     width: 100%;
-    height: 180px;
+    height: 160px;
     position: absolute;
     overflow-y: scroll;
     margin-right: -50px;
@@ -222,7 +243,7 @@ div#skill-desc {
     flex-direction: row;
     justify-content: space-around;
     height: 50px;
-    border-bottom: 5px groove rgb(155,117, 86);
+    border-bottom: 3px groove rgb(155,117, 86);
 }
 
 .button{
@@ -246,37 +267,150 @@ div#skill-desc {
     border-image-source: linear-gradient(rgb(0, 221, 210), rgb(17, 130, 187));
 }
 
-/* #appearLeftRight{
+
+.right, .left{
     position: absolute;
-    top: 0; 
-    bottom: 0; 
-    right: 0;
-    width: 0%;
-    background-color: white;
-    -moz-animation: showHide 2s ease-in;
-    -webkit-animation: showHide 2s ease-in; 
-    -ms-animation: showHide 2s ease-in;
-    -o-animation: showHide 2s ease-in; 
-    animation: showHide 2s ease-in;
+    border: solid white;
+    border-width: 0 12px 12px 0;
+    display: inline-block;
+    padding: 20px;
+    
+}
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    top: 50%;
 }
 
-@-webkit-keyframes showHide { 
-    0% {width:100%}
-    100% {width:0%;}
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    right: 0;
+    bottom: 42%;
 }
-@-moz-keyframes showHide { 
-    0% {width:100%}
-    100% {width:0%;}
+
+.right:hover, .left:hover{
+    cursor: pointer;
 }
-@-ms-keyframes showHide { 
-    0% {width:100%}
-    100% {width:0%;}
+
+.display{
+    opacity: 1;
 }
-@-o-keyframes showHide { 
-    0% {width:100%}
-    100% {width:0%;}
+.none{
+    opacity: 0;
 }
-@keyframes showHide {
-    0% {width:100%}
-    100% {width:0%;}
-} */
+
+.one{
+    background-image: url("../../../public/resource/modi_bg.jpg");
+}
+.two{
+    background-image: url("../../../public/resource/bg3.jpg");
+}
+.three{
+    background-image: url("../../../public/resource/modi_bg2.jpg");
+}
+
+/* responsive */
+
+@media screen and (max-width: 450px){
+
+    #title{ 
+        font-size: 30px;
+        margin: 25px 0;
+    }
+
+    #primary-container{
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+
+    .primary-champ li{
+        width: 40px;
+        height: 40px;
+    }
+
+    .right, .left{
+        border-width: 0 3px 3px 0;
+        padding: 6px;
+    }
+
+    .left{bottom: 40%;}
+    .right{top: 55%; margin-left: 2px;}
+
+    #desc{
+        left: 3%;
+        top: 40px;
+        padding-left: 5px;
+        width: 75%;
+    }
+
+    #border-img{
+        left: unset;
+        top: 35px;
+        right: 6px;
+        width: 72%;
+    }
+
+    #champImg{
+        left: unset;
+        right: 10px;
+        top: 40px;
+        height: 86%;
+        width: 66%;
+    }
+
+    .button{
+        height: 20px;
+        border: 1px solid;
+        border-image-source: linear-gradient(rgb(0, 171, 162), rgb(11, 89, 128));
+        border-image-slice: 1;
+        font-size: 9px;
+    }
+
+    #opinion{font-size: 8px}
+
+    #button-container{
+        height: 35px; 
+        border-bottom: 1px groove rgb(155,117, 86)
+    }
+
+    #video{
+        width: 100px;
+        height: 50px;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        margin: 0 auto;
+    }
+
+    #video-title{
+        font-size: 8px;
+        border: 1px solid;
+        height: 10px;
+        line-height: 11px;
+    }
+    #video-container{
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+
+    #skill-img li{width: 16%;}
+
+    #desc-container{
+        font-size: 9px;
+        height: 60px;
+        border-bottom: 1px groove rgb(155,117, 86);
+    }
+
+    #skill-desc{
+        margin-top: 5px;
+    }
+
+    div.ptext p{
+        top: 15px;
+        font-size: 8px
+    }
+}
