@@ -1,14 +1,22 @@
-import { ADD_ARTICLE } from "../constants/action-types";
+import { SHOW_BAR, NOT_SHOW_BAR } from "../constants/action-types";
 
 const initialState = {
-    articles: []
+    bar: false
 };
 
-function rootReducer(state = initialState, action) {
-    if (action.type === ADD_ARTICLE) {
-        return Object.assign({}, state, {
-            articles: state.articles.concat(action.payload)
-        });
+const rootReducer = (state = initialState, action) => {
+
+    if (action.type === SHOW_BAR) {
+        return {
+            ...state,
+            bar: true
+        };
+    }
+    if (action.type === NOT_SHOW_BAR) {
+        return {
+            ...state,
+            bar: false
+        };
     }
     return state;
 }

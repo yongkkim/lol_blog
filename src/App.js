@@ -6,12 +6,15 @@ import champDesc from "./components/champDesc/champDesc"
 import Contact from "./components/contact/contact.js";
 import { CSSTransition } from 'react-transition-group';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { showBar } from './js/actions/index';
+
 
 class App extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            bar: false,
+            // bar: false,
             images: [],
             allGroup: [],
             title: [],
@@ -47,10 +50,10 @@ class App extends Component {
         let fChamps = [];
         let allGroup = [];
         window.addEventListener('scroll', this.handleScroll);
+        // window.addEventListener('scroll', this.props.showBar());
 
-        axios.get("https://ddragon.leagueoflegends.com/cdn/9.17.1/data/en_US/champion.json")
+        axios.get("https://ddragon.leagueoflegends.com/cdn/9.22.1/data/en_US/champion.json")
             .then(response => {
-                // this.setState({ images: response.data.data });
                 images = response.data.data;
                 let pImageURL = [];
                 let sImageURL = [];
@@ -58,14 +61,13 @@ class App extends Component {
                 let primary = ["Lux", "Leblanc", "Blitzcrank", "Orianna", "Ahri", "Thresh"];
                 let secondary = ["Syndra", "Rumble", "Kennen", "Ezreal", "Karma", "Gragas"];
                 let future = ["Qiyana", "Sylas", "Pyke", "Kaisa", "Vayne", "Akali"];
-                // let keys = Object.keys(this.state.images);
                 let keys = Object.keys(images);
 
 
                 primary.forEach(p => {
                     if (keys.indexOf(p) > -1) {
                         pImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + images[p].image.full,
+                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[p].image.full,
                             name: images[p].name
                         });
                     }
@@ -87,7 +89,7 @@ class App extends Component {
                 secondary.forEach(s => {
                     if (keys.indexOf(s) > -1) {
                         sImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + images[s].image.full,
+                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[s].image.full,
                             name: images[s].name
                         });
                     }
@@ -109,7 +111,7 @@ class App extends Component {
                 future.forEach(f => {
                     if (keys.indexOf(f) > -1) {
                         fImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.18.1/img/champion/" + images[f].image.full,
+                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[f].image.full,
                             name: images[f].name
                         });
                     }
@@ -140,28 +142,18 @@ class App extends Component {
 
     }
 
-
+    //new versionw with redux
     handleScroll = () => {
         let winScroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight
             - document.getElementById("main").offsetHeight;
 
         if (winScroll > document.getElementById("main").offsetHeight - 200) {
-            if (!this.state.bar) {
-                this.setState({
-                    bar: true
-                })
-            }
-
+            this.props.showBar();
             let scrolled = ((winScroll - document.getElementById("main").offsetHeight) / height) * 100;
             document.getElementById("myBar").style.width = scrolled + "%";
-
         } else {
-            if (this.state.bar) {
-                this.setState({
-                    bar: false
-                })
-            }
+            this.props.closeBar();
         }
     }
 
@@ -207,14 +199,14 @@ class App extends Component {
             return (
                 <li key={newName + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/spell/" + skill.image.full}></img>
+                        src={"https://ddragon.leagueoflegends.com/cdn/9.22.1/img/spell/" + skill.image.full}></img>
                 </li>
             )
         })
 
         passiveAndSkills.push(<li key={newName + "-passive"} id={this.state.skills[newName].passive.name}>
             <img onClick={e => this.showSkillDesc(e, this.state.skills[newName].passive.description)}
-                src={"https://ddragon.leagueoflegends.com/cdn/9.18.1/img/passive/" + this.state.skills[newName].passive.image.full}></img>
+                src={"https://ddragon.leagueoflegends.com/cdn/9.22.1/img/passive/" + this.state.skills[newName].passive.image.full}></img>
         </li>);
 
         document.getElementById("opinion").innerHTML = champDesc[newName].desc;
@@ -255,12 +247,13 @@ class App extends Component {
 
 
     render() {
-        // console.log("props = " + this.props.clicked);
+        console.log("props = " + this.props.bar);
         if (this.state.grouping) {
             return (
                 <ul className="list">
                     <CSSTransition
-                        in={this.state.bar}
+                        // in={this.state.bar}
+                        in={this.props.bar}
                         timeout={500}
                         classNames="progress"
                         unmountOnExit
@@ -283,4 +276,15 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return { bar: state.bar };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        showBar: () => dispatch(showBar()),
+        closeBar: () => dispatch(closeBar())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
