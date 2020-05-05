@@ -2,143 +2,88 @@ import React, { Component, useState } from "react";
 import "./App.css";
 import Main from "./components/main/main.js";
 import Primary from "./components/primary/primary.js";
-import champDesc from "./components/champDesc/champDesc"
+import { desc, mostPlayedChamp } from "./components/champDesc/champDesc"
 import Contact from "./components/contact/contact.js";
 import { CSSTransition } from 'react-transition-group';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { showBar } from './js/actions/index';
+import { showBar, closeBar, gatherInfo, openMenu } from './js/actions/index';
 
 
 class App extends Component {
     constructor(prop) {
         super(prop);
-        this.state = {
-            // bar: false,
-            images: [],
-            allGroup: [],
-            title: [],
-            grouping: false,
-            clicked: false,
-            clickedChampSkills: "",
-            selectedChamp: "",
-            skills: {}
-        }
     }
 
     componentDidMount() {
         let allChampSkills = {};
-        let threeTitle = [];
-        Object.keys(champDesc).forEach(name => {
+        Object.keys(desc).forEach(name => {
 
-            let newName;
-            if (name !== "LeBlanc" && name !== "Kai'Sa") {
-                newName = name;
-            } else {
-                newName = name === "Kai'Sa" ? "Kaisa" : "Leblanc";
-            }
-            axios.get("https://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion/" + newName + ".json")
+            let newName = name !== "LeBlanc" && name !== "Kai'Sa" ? name : name === "Kai'Sa" ? "Kaisa" : "Leblanc";
+
+            axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion/" + newName + ".json")
                 .then(response => {
                     allChampSkills[name] = response.data.data[newName];
                 });
         })
-        this.setState({ skills: allChampSkills });
 
         let images = [];
-        let pChamps = [];
-        let sChamps = [];
-        let fChamps = [];
         let allGroup = [];
+        let keys;
         window.addEventListener('scroll', this.handleScroll);
-        // window.addEventListener('scroll', this.props.showBar());
-
-        axios.get("https://ddragon.leagueoflegends.com/cdn/9.22.1/data/en_US/champion.json")
-            .then(response => {
-                images = response.data.data;
-                let pImageURL = [];
-                let sImageURL = [];
-                let fImageURL = [];
-                let primary = ["Lux", "Leblanc", "Blitzcrank", "Orianna", "Ahri", "Thresh"];
-                let secondary = ["Syndra", "Rumble", "Kennen", "Ezreal", "Karma", "Gragas"];
-                let future = ["Qiyana", "Sylas", "Pyke", "Kaisa", "Vayne", "Akali"];
-                let keys = Object.keys(images);
+        axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion.json")
+            .then(response => images = response.data.data)
+            .then(() => {
+                keys = Object.keys(images);
+                let threeGroup = [
+                    ["Lux", "Leblanc", "Blitzcrank", "Orianna", "Ahri", "Thresh"],
+                    ["Syndra", "Rumble", "Kennen", "Ezreal", "Karma", "Gragas"],
+                    ["Qiyana", "Sylas", "Pyke", "Kaisa", "Vayne", "Akali"]
+                ]
 
 
-                primary.forEach(p => {
-                    if (keys.indexOf(p) > -1) {
-                        pImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[p].image.full,
-                            name: images[p].name
-                        });
+                for (let group of threeGroup) {
+                    let champsURL = [];
+                    let champs = [];
+                    for (let champ of group) {
+                        if (keys.indexOf(champ) > -1) {
+                            champsURL.push({
+                                url: "https://ddragon.leagueoflegends.com/cdn/10.8.1/img/champion/" + images[champ].image.full,
+                                name: images[champ].name
+                            });
+                        }
                     }
-                })
-
-                Object.keys(pImageURL).map((num, i) => {
-                    pChamps.push(
-                        <li key={i}>
-                            <img key={i + "_img"} src={pImageURL[num].url} />
+                    champs = Object.keys(champsURL).map((num, i) => {
+                        return <li key={i}>
+                            <img key={i + "_img"} src={champsURL[num].url} />
                             <div key={i + "_text"} className="ptext" id={"ptext" + i}
-                                onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => this.showDesc(pImageURL[num].name)}>
-                                <p>{pImageURL[num].name}</p>
+                                onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => { this.showDesc(champsURL[num].name) }}>
+                                <p>{champsURL[num].name}</p>
                             </div>
-                        </li>);
-                })
+                        </li>;
+                    })
+                    allGroup.push(champs);
+                }
 
-                allGroup.push(pChamps);
-
-                secondary.forEach(s => {
-                    if (keys.indexOf(s) > -1) {
-                        sImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[s].image.full,
-                            name: images[s].name
-                        });
-                    }
-                })
-
-                Object.keys(sImageURL).map((num, i) => {
-                    sChamps.push(
-                        <li key={i}>
-                            <img key={i + "_img"} src={sImageURL[num].url} />
-                            <div key={i + "_text"} className="ptext" id={"ptext" + i}
-                                onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => this.showDesc(sImageURL[num].name)}>
-                                <p>{sImageURL[num].name}</p>
-                            </div>
-                        </li>);
-                })
-
-                allGroup.push(sChamps);
-
-                future.forEach(f => {
-                    if (keys.indexOf(f) > -1) {
-                        fImageURL.push({
-                            url: "https://ddragon.leagueoflegends.com/cdn/9.22.1/img/champion/" + images[f].image.full,
-                            name: images[f].name
-                        });
-                    }
-                })
-
-                Object.keys(fImageURL).map((num, i) => {
-                    fChamps.push(
-                        <li key={i}>
-                            <img key={i + "_img"} src={fImageURL[num].url} />
-                            <div key={i + "_text"} className="ptext" id={"ptext" + i}
-                                onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => this.showDesc(fImageURL[num].name)}>
-                                <p>{fImageURL[num].name}</p>
-                            </div>
-                        </li>);
-                })
-
-                allGroup.push(fChamps);
-
-                threeTitle.push("My 1st Tier Champions");
-                threeTitle.push("My 2nd Tier Champions");
-                threeTitle.push("Champions I'll Play");
             }).then(() =>
-                this.setState({
+                this.props.gatherInfo({
                     allGroup: allGroup,
-                    title: threeTitle,
+                    title: ["My 1st Tier Champions", "My 2nd Tier Champions", "Champions I'll Play"],
+                    skills: allChampSkills,
                     grouping: true
-                }));
+                }))
+
+        //each lane top picks
+        // Object.keys(mostPlayedChamp).forEach(name => {
+        //     let laneChamps = [];
+        //     mostPlayedChamp[name].forEach(ch => {
+        //         axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion/" + ch + ".json")
+        //         .then(response => {
+        //             laneChamps.push(response.data.data[ch]);
+        //         });
+        //     })
+        // })
+
 
     }
 
@@ -175,47 +120,36 @@ class App extends Component {
     }
 
     showDesc = (name) => {
-        if (this.state.clicked) {
+        if (this.props.clicked) {
             this.showOpinion();
         }
 
-        let nameForUrl;
-        if (name !== "LeBlanc" && name !== "Kai'Sa") {
-            nameForUrl = name;
-        } else {
-            nameForUrl = name === "Kai'Sa" ? "Kaisa" : "Leblanc";
-        }
+        let nameForUrl = name !== "LeBlanc" && name !== "Kai'Sa" ? name : name === "Kai'Sa" ? "Kaisa" : "Leblanc";
 
-        let newName;
-        if (name !== "Kai'Sa") {
-            newName = name;
-        } else {
-            newName = "Kaisa"
-        }
+        let newName = name !== "Kai'Sa" ? name : "Kaisa";
 
         let url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + nameForUrl + "_0.jpg";
 
-        let passiveAndSkills = this.state.skills[newName].spells.map((skill, i) => {
+        let passiveAndSkills = this.props.skills[newName].spells.map((skill, i) => {
             return (
                 <li key={newName + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
-                        src={"https://ddragon.leagueoflegends.com/cdn/9.22.1/img/spell/" + skill.image.full}></img>
+                        src={"https://ddragon.leagueoflegends.com/cdn/10.8.1/img/spell/" + skill.image.full}></img>
                 </li>
             )
         })
 
-        passiveAndSkills.push(<li key={newName + "-passive"} id={this.state.skills[newName].passive.name}>
-            <img onClick={e => this.showSkillDesc(e, this.state.skills[newName].passive.description)}
-                src={"https://ddragon.leagueoflegends.com/cdn/9.22.1/img/passive/" + this.state.skills[newName].passive.image.full}></img>
+        passiveAndSkills.push(<li key={newName + "-passive"} id={this.props.skills[newName].passive.name}>
+            <img onClick={e => this.showSkillDesc(e, this.props.skills[newName].passive.description)}
+                src={"https://ddragon.leagueoflegends.com/cdn/10.8.1/img/passive/" + this.props.skills[newName].passive.image.full}></img>
         </li>);
 
         document.getElementById("opinion").innerHTML = champDesc[newName].desc;
-        // document.getElementById("champImg").style.display = "block";
         document.getElementById("champImg").style.opacity = "1";
         document.getElementById("champImg").src = url;
         document.getElementById("video").src = champDesc[newName].video;
 
-        this.setState({
+        this.props.openMenu({
             clicked: true,
             selectedChamp: name,
             clickedChampSkills: passiveAndSkills
@@ -239,20 +173,11 @@ class App extends Component {
 
     }
 
-    clickedStatus = () => {
-        this.setState({
-            clicked: false
-        })
-    }
-
-
     render() {
-        console.log("props = " + this.props.bar);
-        if (this.state.grouping) {
+        if (this.props.grouping) {
             return (
                 <ul className="list">
                     <CSSTransition
-                        // in={this.state.bar}
                         in={this.props.bar}
                         timeout={500}
                         classNames="progress"
@@ -263,10 +188,7 @@ class App extends Component {
                         </div>
                     </CSSTransition>
                     <li id="main"><Main /></li>
-                    <li id="primary"><Primary allChamps={this.state.allGroup} clicked={this.state.clicked}
-                        clickedChampSkills={this.state.clickedChampSkills} selectedChamp={this.state.selectedChamp}
-                        showOpinion={this.showOpinion} showSkill={this.showSkill} title={this.state.title}
-                        clickedStatus={this.clickedStatus} /></li>
+                    <li id="primary"><Primary showOpinion={this.showOpinion} showSkill={this.showSkill} /></li>
                     <li id="contact"><Contact /></li>
                 </ul>
             );
@@ -277,13 +199,20 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { bar: state.bar };
+    return {
+        bar: state.bar,
+        clicked: state.clicked,
+        grouping: state.grouping,
+        skills: state.skills
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         showBar: () => dispatch(showBar()),
-        closeBar: () => dispatch(closeBar())
+        closeBar: () => dispatch(closeBar()),
+        openMenu: (info) => dispatch(openMenu(info)),
+        gatherInfo: (info) => dispatch(gatherInfo(info))
     };
 }
 

@@ -1,24 +1,15 @@
 import React, { Component } from "react";
-import { CSSTransition, ReactCSSTransisionGroup } from 'react-transition-group';
+import { connect } from 'react-redux';
+import { clickArrow, arrangeGroup, changeGroup } from '../../js/actions/index';
 import "./primary.css";
 
 class Primary extends Component {
     constructor(prop) {
         super(prop);
-        this.state = {
-            clicked: false,
-            clickedChampSkills: this.props.clickedChampSkills,
-            selectedChamp: this.props.selectedChamp,
-            allGroup: [],
-            selectedGroup: [],
-            allTitle: this.props.title,
-            selectedTitle: this.props.title[0],
-            nthGroup: 0,
-        }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.clicked !== this.state.clicked) {
+        if (nextProps.clicked !== this.props.clicked) {
             this.setState({
                 clicked: nextProps.clicked,
                 selectedChamp: nextProps.selectedChamp,
@@ -39,56 +30,43 @@ class Primary extends Component {
             document.getElementById("primary-container").style.webkitBackgroundSize = "100% 50%";
         }
 
-        let allchampgroups = this.props.allChamps;
-        if (!this.state.clicked) {
-            this.setState({
-                allGroup: allchampgroups,
-                selectedGroup: allchampgroups[0],
-                nthGroup: 0
+        if (!this.props.clicked) {
+            this.props.arrangeGroup({
+                selectedGroup: this.props.allGroup[0],
+                nthGroup: 0,
+                selectedTitle: this.props.title[0]
             })
         }
     }
 
     previousList = () => {
         document.getElementById("champImg").style.opacity = "0"
-        if (this.state.nthGroup === 0) {
-            this.setState({
-                selectedGroup: this.props.allChamps[this.state.allGroup.length - 1],
-                nthGroup: this.state.allGroup.length - 1,
-                selectedTitle: this.state.allTitle[this.state.allGroup.length - 1],
-            }, this.props.clickedStatus())
-        } else {
-            this.setState({
-                selectedGroup: this.state.allGroup[this.state.nthGroup - 1],
-                nthGroup: this.state.nthGroup - 1,
-                selectedTitle: this.state.allTitle[this.state.nthGroup - 1],
-            }, this.props.clickedStatus())
-        }
+        let index = this.props.nthGroup === 0 ? this.props.allGroup.length - 1 : this.props.nthGroup - 1;
+        this.props.changeGroup({
+            selectedGroup: this.props.allGroup[index],
+            nthGroup: index,
+            selectedTitle: this.props.title[index],
+        })
+        this.props.clickArrow();
     }
 
     nextList = () => {
         document.getElementById("champImg").style.opacity = "0"
-        if (this.state.nthGroup === this.state.allGroup.length - 1) {
-            this.setState({
-                selectedGroup: this.state.allGroup[0],
-                nthGroup: 0,
-                selectedTitle: this.state.allTitle[0],
-            }, this.props.clickedStatus())
-        } else {
-            this.setState({
-                selectedGroup: this.state.allGroup[this.state.nthGroup + 1],
-                nthGroup: this.state.nthGroup + 1,
-                selectedTitle: this.state.allTitle[this.state.nthGroup + 1],
-            }, this.props.clickedStatus())
-        }
+        let index = this.props.nthGroup === this.props.allGroup.length - 1 ? 0 : this.props.nthGroup + 1;
+        this.props.changeGroup({
+            selectedGroup: this.props.allGroup[index],
+            nthGroup: index,
+            selectedTitle: this.props.title[index],
+        })
+        this.props.clickArrow();
     }
 
     render() {
         return (
-            <div id="primary-container" className={this.state.nthGroup === 0 ? "one" : this.state.nthGroup === 1 ? "two" : "three"}>
-                <h1 id="title" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }}>{this.state.selectedTitle}</h1>
+            <div id="primary-container" className={this.props.nthGroup === 0 ? "one" : this.props.nthGroup === 1 ? "two" : "three"}>
+                <h1 id="title" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }}>{this.props.selectedTitle}</h1>
                 <div id="desc-box">
-                    <div id="desc" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }} className={this.state.clicked ? "display" : "none"}>
+                    <div id="desc" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }} className={this.props.clicked ? "display" : "none"}>
                         <div id="button-container">
                             <div className="button preference" onClick={e => this.props.showOpinion()}>Opinion</div>
                             <div className="button skill" onClick={e => this.props.showSkill()}>Skillset</div>
@@ -98,9 +76,9 @@ class Primary extends Component {
                         </div>
                         <div id="skillset">
                             <ul id="skill-img">
-                                {this.state.clickedChampSkills}
+                                {this.props.clickedChampSkills}
                                 <div id="desc-container">
-                                    <div id="skill-desc" style={{ color: this.state.nthGroup === 1 ? '#ffb800' : "lightblue" }}></div>
+                                    <div id="skill-desc" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }}></div>
                                 </div>
                             </ul>
                             <div id="video-container">
@@ -113,7 +91,7 @@ class Primary extends Component {
                     <div className="left" onClick={e => { this.previousList() }}></div>
                 </div>
                 <ul className="primary-champ">
-                    {this.state.selectedGroup}
+                    {this.props.selectedGroup}
                 </ul>
                 <div id="img-box">
                     <div className="right" onClick={e => { this.nextList() }}></div>
@@ -125,4 +103,25 @@ class Primary extends Component {
     }
 }
 
-export default Primary;
+const mapStateToProps = (state) => {
+    return {
+        clicked: state.clicked,
+        clickedChampSkills: state.clickedChampSkills,
+        selectedChamp: state.selectedChamp,
+        selectedGroup: state.selectedGroup,
+        selectedTitle: state.selectedTitle,
+        nthGroup: state.nthGroup,
+        allGroup: state.allGroup,
+        title: state.title
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clickArrow: () => dispatch(clickArrow()),
+        arrangeGroup: (info) => dispatch(arrangeGroup(info)),
+        changeGroup: (info) => dispatch(changeGroup(info))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Primary);

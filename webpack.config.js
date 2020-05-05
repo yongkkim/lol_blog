@@ -33,7 +33,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         // set publiPath to "./" for production
-        publicPath: "./",
+        // publicPath: "./", //production
+        publicPath: "./dist/", //development
         filename: "bundle.js"
     },
     devServer: {
@@ -42,11 +43,11 @@ module.exports = {
         publicPath: "http://localhost:3000/dist/",
         hotOnly: true
     },
-    plugins: [new webpack.HotModuleReplacementPlugin(),
-    // uncomment the below for production
-    new HtmlWebPackPlugin({
-        template: "./public/index.html",
-        filename: "index.html"
-    })
+    plugins: [new webpack.HotModuleReplacementPlugin()
+        // uncomment out the below for production
+        , new HtmlWebPackPlugin({
+            template: "./public/index.html",
+            filename: "index.html"
+        })
     ]
 };

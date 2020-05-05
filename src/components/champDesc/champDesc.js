@@ -1,5 +1,5 @@
 
-const desc = {
+export const desc = {
     Lux: {
         desc: "In my opinion, as a mid laner, Lux is a flawless champion in terms of her skills" +
             "because she has increased damange with a basic attack with her passive, a snare, mobility reduction that deals damage" +
@@ -142,4 +142,10 @@ const desc = {
     }
 }
 
-export default desc;
+export const mostPlayedChamp = {
+    top: ["Maokai", "Wukong", "Darius", "Garen", "Fiora", "Mordekaiser", "Jax", "Rengar", "Kled", "Renekton"],
+    mid: ["Talon", "Galio", "Cassiopeia", "Kassadin", "Katarina", "Ekko", "Diana", "Fizz", "Pantheon", "Yasuo"],
+    jungle: ["Graves", "Wukong", "Zac", "Karthus", "Elise", "Lee Sin", "Ekko", "RekSai", "Shyvana", "Olaf"],
+    support: ["Bard", "Blitzcrank", "Leona", "Maokai", "Zilean", "Taric", "Senna", "Thresh", "Morgana", "Lulu"],
+    ad: ["Miss Fortune", "Ezreal", "Varus", "Vayne", "Yasuo", "Ashe", "Caitlyn", "Cassiopeia", "Aphelios", "Kalista"],
+}
