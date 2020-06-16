@@ -1,4 +1,4 @@
-import { SHOW_BAR, NOT_SHOW_BAR, CLICK_ARROW, OPEN_MENU, ARRANGE_GROUP, CHANGE_GROUP, GATHER_INFO } from "../constants/action-types";
+import { SHOW_BAR, NOT_SHOW_BAR, CLICK_ARROW, OPEN_MENU, ARRANGE_GROUP, CHANGE_GROUP, GATHER_INFO, SET_CLASSNAME } from "../constants/action-types";
 
 const initialState = {
     bar: false,
@@ -12,7 +12,8 @@ const initialState = {
     title: [],
     skills: {},
     grouping: false,
-
+    className: "overview button",
+    groupChampInfo: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -66,6 +67,21 @@ const rootReducer = (state = initialState, action) => {
             selectedTitle: action.info.selectedTitle,
             selectedGroup: action.info.selectedGroup,
             nthGroup: action.info.nthGroup
+        };
+    }
+
+    if (action.type === SET_CLASSNAME) {
+        return {
+            ...state,
+            className: action.className
+        }
+    }
+
+    if (action.type === "DATA_GROUP_CHAMPS") {
+        console.log("reducer group", action.payload);
+        return {
+            ...state,
+            groupChampInfo: action.payload
         };
     }
 

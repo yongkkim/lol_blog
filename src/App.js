@@ -1,13 +1,13 @@
 import React, { Component, useState } from "react";
 import "./App.css";
 import Main from "./components/main/main.js";
+import Patch from "./components/patch/patch.js";
 import Primary from "./components/primary/primary.js";
-import { desc, mostPlayedChamp } from "./components/champDesc/champDesc"
+import { desc, mostPlayedChamp, patchChamp } from "./components/champDesc/champDesc"
 import Contact from "./components/contact/contact.js";
 import { CSSTransition } from 'react-transition-group';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { showBar, closeBar, gatherInfo, openMenu } from './js/actions/index';
+import { showBar, closeBar, gatherInfo, openMenu, changeBorder, groupChamp } from './js/actions/index';
 
 
 class App extends Component {
@@ -16,78 +16,41 @@ class App extends Component {
     }
 
     componentDidMount() {
-        let allChampSkills = {};
-        Object.keys(desc).forEach(name => {
+        window.addEventListener('scroll', this.handleScroll);
+        let allGroup = [];
 
-            let newName = name !== "LeBlanc" && name !== "Kai'Sa" ? name : name === "Kai'Sa" ? "Kaisa" : "Leblanc";
-
-            axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion/" + newName + ".json")
-                .then(response => {
-                    allChampSkills[name] = response.data.data[newName];
+        Object.keys(desc).forEach(group => {
+            let champsURL = [];
+            let champs = [];
+            Object.keys(desc[group]).forEach(name => {
+                let newName = name === "Kai'Sa" ? "Kaisa" : name === "LeBlanc" ? "Leblanc" : name;
+                champsURL.push({
+                    url: "https://ddragon.leagueoflegends.com/cdn/10.8.1/img/champion/" + newName + ".png",
+                    name: newName
                 });
+
+                champs = Object.keys(champsURL).map((num, i) => {
+                    return <li key={i}>
+                        <img key={i + "_img"} src={champsURL[num].url} />
+                        <div key={i + "_text"} className="ptext" id={"ptext" + i}
+                            onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => { this.showDesc(champsURL[num].name, group) }}>
+                            <p>{champsURL[num].name}</p>
+                        </div>
+                    </li>;
+                })
+            })
+            allGroup.push(champs);
         })
 
-        let images = [];
-        let allGroup = [];
-        let keys;
-        window.addEventListener('scroll', this.handleScroll);
-        axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion.json")
-            .then(response => images = response.data.data)
-            .then(() => {
-                keys = Object.keys(images);
-                let threeGroup = [
-                    ["Lux", "Leblanc", "Blitzcrank", "Orianna", "Ahri", "Thresh"],
-                    ["Syndra", "Rumble", "Kennen", "Ezreal", "Karma", "Gragas"],
-                    ["Qiyana", "Sylas", "Pyke", "Kaisa", "Vayne", "Akali"]
-                ]
+        this.props.groupChamp();
 
-
-                for (let group of threeGroup) {
-                    let champsURL = [];
-                    let champs = [];
-                    for (let champ of group) {
-                        if (keys.indexOf(champ) > -1) {
-                            champsURL.push({
-                                url: "https://ddragon.leagueoflegends.com/cdn/10.8.1/img/champion/" + images[champ].image.full,
-                                name: images[champ].name
-                            });
-                        }
-                    }
-                    champs = Object.keys(champsURL).map((num, i) => {
-                        return <li key={i}>
-                            <img key={i + "_img"} src={champsURL[num].url} />
-                            <div key={i + "_text"} className="ptext" id={"ptext" + i}
-                                onMouseEnter={e => this.showName(e)} onMouseLeave={e => this.hideName(e)} onClick={e => { this.showDesc(champsURL[num].name) }}>
-                                <p>{champsURL[num].name}</p>
-                            </div>
-                        </li>;
-                    })
-                    allGroup.push(champs);
-                }
-
-            }).then(() =>
-                this.props.gatherInfo({
-                    allGroup: allGroup,
-                    title: ["My 1st Tier Champions", "My 2nd Tier Champions", "Champions I'll Play"],
-                    skills: allChampSkills,
-                    grouping: true
-                }))
-
-        //each lane top picks
-        // Object.keys(mostPlayedChamp).forEach(name => {
-        //     let laneChamps = [];
-        //     mostPlayedChamp[name].forEach(ch => {
-        //         axios.get("https://ddragon.leagueoflegends.com/cdn/10.8.1/data/en_US/champion/" + ch + ".json")
-        //         .then(response => {
-        //             laneChamps.push(response.data.data[ch]);
-        //         });
-        //     })
-        // })
-
-
+        this.props.gatherInfo({
+            allGroup: allGroup,
+            title: ["My 1st Tier Champions", "My 2nd Tier Champions", "Champions I'll Play"],
+            grouping: true
+        })
     }
 
-    //new versionw with redux
     handleScroll = () => {
         let winScroll = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight
@@ -108,29 +71,37 @@ class App extends Component {
         e.target.firstChild.style.display = "block";
     }
 
-    showOpinion = () => {
+    showOverview = () => {
         document.getElementById("opinion").style.display = "block";
         document.getElementById("skillset").style.display = "none";
+        document.getElementById("video-container").style.display = "none";
+        this.props.changeBorder("overview");
     }
 
     showSkill = () => {
         document.getElementById("opinion").style.display = "none";
         document.getElementById("skillset").style.display = "block";
+        document.getElementById("video-container").style.display = "none";
         document.getElementById("skill-img").firstChild.firstChild.click();
+        this.props.changeBorder("skill");
     }
 
-    showDesc = (name) => {
-        if (this.props.clicked) {
-            this.showOpinion();
-        }
+    showVideo = () => {
+        document.getElementById("opinion").style.display = "none";
+        document.getElementById("skillset").style.display = "none";
+        document.getElementById("video-container").style.display = "block";
+        document.getElementById("skill-img").firstChild.firstChild.click();
+        this.props.changeBorder("video");
+    }
 
-        let nameForUrl = name !== "LeBlanc" && name !== "Kai'Sa" ? name : name === "Kai'Sa" ? "Kaisa" : "Leblanc";
+    showDesc = (name, group) => {
+        this.showOverview();
 
-        let newName = name !== "Kai'Sa" ? name : "Kaisa";
+        let newName = name !== "LeBlanc" && name !== "Kai'Sa" ? name : name === "Kai'Sa" ? "Kaisa" : "Leblanc";
 
-        let url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + nameForUrl + "_0.jpg";
+        let url = "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/" + newName + "_0.jpg";
 
-        let passiveAndSkills = this.props.skills[newName].spells.map((skill, i) => {
+        let passiveAndSkills = this.props.groupChampInfo[newName].spells.map((skill, i) => {
             return (
                 <li key={newName + "-skill" + i} id={skill.id}>
                     <img onClick={e => this.showSkillDesc(e, skill.description)}
@@ -139,15 +110,16 @@ class App extends Component {
             )
         })
 
-        passiveAndSkills.push(<li key={newName + "-passive"} id={this.props.skills[newName].passive.name}>
-            <img onClick={e => this.showSkillDesc(e, this.props.skills[newName].passive.description)}
-                src={"https://ddragon.leagueoflegends.com/cdn/10.8.1/img/passive/" + this.props.skills[newName].passive.image.full}></img>
+        passiveAndSkills.push(<li key={newName + "-passive"} id={this.props.groupChampInfo[newName].passive.name}>
+            <img onClick={e => this.showSkillDesc(e, this.props.groupChampInfo[newName].passive.description)}
+                src={"https://ddragon.leagueoflegends.com/cdn/10.8.1/img/passive/" + this.props.groupChampInfo[newName].passive.image.full}></img>
         </li>);
 
-        document.getElementById("opinion").innerHTML = champDesc[newName].desc;
+        document.getElementById("opinion").innerHTML = desc[group][newName].desc;
         document.getElementById("champImg").style.opacity = "1";
+        document.getElementById("border-img").style.opacity = "1";
         document.getElementById("champImg").src = url;
-        document.getElementById("video").src = champDesc[newName].video;
+        document.getElementById("video").src = desc[group][newName].video;
 
         this.props.openMenu({
             clicked: true,
@@ -188,7 +160,8 @@ class App extends Component {
                         </div>
                     </CSSTransition>
                     <li id="main"><Main /></li>
-                    <li id="primary"><Primary showOpinion={this.showOpinion} showSkill={this.showSkill} /></li>
+                    <li id="patch"><Patch /></li>
+                    <li id="primary"><Primary showOverview={this.showOverview} showSkill={this.showSkill} showVideo={this.showVideo} /></li>
                     <li id="contact"><Contact /></li>
                 </ul>
             );
@@ -203,7 +176,8 @@ const mapStateToProps = (state) => {
         bar: state.bar,
         clicked: state.clicked,
         grouping: state.grouping,
-        skills: state.skills
+        skills: state.skills,
+        groupChampInfo: state.groupChampInfo
     };
 }
 
@@ -212,7 +186,9 @@ const mapDispatchToProps = (dispatch) => {
         showBar: () => dispatch(showBar()),
         closeBar: () => dispatch(closeBar()),
         openMenu: (info) => dispatch(openMenu(info)),
-        gatherInfo: (info) => dispatch(gatherInfo(info))
+        gatherInfo: (info) => dispatch(gatherInfo(info)),
+        changeBorder: (className) => dispatch(changeBorder(className)),
+        groupChamp: () => dispatch(groupChamp())
     };
 }
 

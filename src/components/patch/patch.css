@@ -1,0 +1,9 @@
+li#patch{
+    height: auto;
+    display: block;
+}
+
+#patch-container{
+    background-color: rgb(0, 9, 19);
+    overflow: hidden;
+}

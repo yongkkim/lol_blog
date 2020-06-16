@@ -7,3 +7,4 @@ export const GATHER_SKILLS = "GATHER_SKILLS";
 export const GATHER_INFO = "GATHER_INFO";
 export const ARRANGE_GROUP = "ARRANGE_GROUP";
 export const CHANGE_GROUP = "CHANGE_GROUP";
+export const SET_CLASSNAME = "SET_CLASSNAME";

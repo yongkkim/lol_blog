@@ -8,21 +8,6 @@ class Primary extends Component {
         super(prop);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.clicked !== this.props.clicked) {
-            this.setState({
-                clicked: nextProps.clicked,
-                selectedChamp: nextProps.selectedChamp,
-                clickedChampSkills: nextProps.clickedChampSkills
-            });
-        } else {
-            this.setState({
-                selectedChamp: nextProps.selectedChamp,
-                clickedChampSkills: nextProps.clickedChampSkills
-            });
-        }
-    }
-
     componentDidMount() {
         let userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -40,7 +25,8 @@ class Primary extends Component {
     }
 
     previousList = () => {
-        document.getElementById("champImg").style.opacity = "0"
+        document.getElementById("champImg").style.opacity = "0";
+        document.getElementById("border-img").style.opacity = "0";
         let index = this.props.nthGroup === 0 ? this.props.allGroup.length - 1 : this.props.nthGroup - 1;
         this.props.changeGroup({
             selectedGroup: this.props.allGroup[index],
@@ -51,7 +37,8 @@ class Primary extends Component {
     }
 
     nextList = () => {
-        document.getElementById("champImg").style.opacity = "0"
+        document.getElementById("champImg").style.opacity = "0";
+        document.getElementById("border-img").style.opacity = "0";
         let index = this.props.nthGroup === this.props.allGroup.length - 1 ? 0 : this.props.nthGroup + 1;
         this.props.changeGroup({
             selectedGroup: this.props.allGroup[index],
@@ -65,12 +52,13 @@ class Primary extends Component {
         return (
             <div id="primary-container" className={this.props.nthGroup === 0 ? "one" : this.props.nthGroup === 1 ? "two" : "three"}>
                 <h1 id="title" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }}>{this.props.selectedTitle}</h1>
-                <div id="desc-box">
-                    <div id="desc" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }} className={this.props.clicked ? "display" : "none"}>
-                        <div id="button-container">
-                            <div className="button preference" onClick={e => this.props.showOpinion()}>Opinion</div>
-                            <div className="button skill" onClick={e => this.props.showSkill()}>Skillset</div>
-                        </div>
+                <div id="desc-box" className={this.props.clicked ? "display" : "none"}>
+                    <div id="desc">
+                        <ul className={this.props.className} id="button-container">
+                            <li className="button" onClick={e => this.props.showOverview()}>Overview</li>
+                            <li className="button" onClick={e => this.props.showSkill()}>Skills</li>
+                            <li className="button" onClick={e => this.props.showVideo()}>Video</li>
+                        </ul>
                         <div id="opinion-container">
                             <p id="opinion"></p>
                         </div>
@@ -78,23 +66,24 @@ class Primary extends Component {
                             <ul id="skill-img">
                                 {this.props.clickedChampSkills}
                                 <div id="desc-container">
-                                    <div id="skill-desc" style={{ color: this.props.nthGroup === 1 ? '#ffb800' : "lightblue" }}></div>
+                                    <div id="skill-desc"></div>
                                 </div>
                             </ul>
-                            <div id="video-container">
-                                <p id="video-title">Best Plays</p>
-                                <iframe id="video" frameBorder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                            </div>
+                        </div>
+                        <div id="video-container">
+                            <iframe id="video" frameBorder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                         </div>
                     </div>
-                    <div className="left" onClick={e => { this.previousList() }}></div>
                 </div>
                 <ul className="primary-champ">
                     {this.props.selectedGroup}
                 </ul>
-                <div id="img-box">
+                <div id="arrows">
+                    <div className="left" onClick={e => { this.previousList() }}></div>
                     <div className="right" onClick={e => { this.nextList() }}></div>
+                </div>
+                <div id="img-box">
                     <img id="border-img" src={require("../../../public/resource/modi_challenger.png")}></img>
                     <img id="champImg"></img>
                 </div>
@@ -112,7 +101,8 @@ const mapStateToProps = (state) => {
         selectedTitle: state.selectedTitle,
         nthGroup: state.nthGroup,
         allGroup: state.allGroup,
-        title: state.title
+        title: state.title,
+        className: state.className
     };
 }
 

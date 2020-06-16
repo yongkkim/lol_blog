@@ -17,17 +17,19 @@ li#primary {
     border-bottom: 5px groove rgb(155,117, 86);
     -webkit-transition: .5s ease-in;
     transition: .5s ease-in;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #primary-container > * {
-    width: 10%;
+    width: 15%;
 }
 
 #title{
     font-size: 80px;
     font-weight: bold;
     letter-spacing: 2px;
-    margin: 60px;
+    margin: 60px 60px 5px 60px;
     width: 100%;
     text-align: center;
     color:white;
@@ -42,8 +44,14 @@ li#primary {
 }
 
 #desc-box{
-    flex: 0 0 45%;
+    flex: 0 0 30%;
     position: relative;
+    background-color: rgba(3,17, 38, 0.7);
+    border-radius: 15px;
+    margin: 50px 50px 0 0;
+    height: 500px;
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
 }
 
 .primary-champ li img {
@@ -55,8 +63,8 @@ li#primary {
 .primary-champ li{
     position: relative;
     color: rgb(160, 255, 250);
-    height: 100px;
-    width: 100px;
+    height: 90px;
+    width: 90px;
     border-radius: 50px;
     background-color: white;
     margin-bottom: 10px;
@@ -89,8 +97,9 @@ div.ptext p {
 }
 
 div#img-box {
-    flex: 0 0 45%;
+    flex: 0 0 37%;
     position: relative;
+    align-self:stretch;
 }
 
 #border-img{
@@ -100,6 +109,9 @@ div#img-box {
     left: 20%;
     right: 0;
     top: 50px;
+    opacity: 0;
+    -webkit-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
 }
 
 #champImg{
@@ -119,23 +131,12 @@ div#img-box {
 #desc{
     font-weight: bold;
     color: lightblue;
-    height: 80%;
-    width: 45%;
-    padding-left: 40px;
-    top: 60px;
-    left: 25%;
-    overflow: hidden;
-    position: relative;
-    -webkit-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
+    height: 100%
+
 }
 #opinion-container{
-    display: block;
-    width: 85%;
+    margin-top: 40px;
     padding: 0 15px;
-    height: inherit;
-    position: absolute;
-    overflow-y: scroll;
 }
 #opinion{
     height: inherit;
@@ -143,7 +144,7 @@ div#img-box {
 }
 
 #skillset{
-    margin-top: 20px;
+    margin-top: 40px;
     display: none;
     padding: 0;
     width: 100%;
@@ -151,29 +152,20 @@ div#img-box {
 
 div#skill-desc {
     margin-top: 20px;
-    padding-bottom: 20px;
-    color:lightblue;
+    padding: 20px;
 }
-
-
 
 #desc-container{
     display: block;
     width: 100%;
     height: 160px;
-    position: absolute;
-    overflow-y: scroll;
-    margin-right: -50px;
-    padding-right: 50px;
-    left:0;
-    border-bottom: 5px groove rgb(155,117, 86);
 }
 
 #skill-img{
     list-style: none;
     padding: 0;
-    position: absolute;
     z-index: 9;
+    text-align: center;
 }
 
 #skill-img li{
@@ -195,44 +187,15 @@ div#skill-desc {
 }
 
 #video-container{
-    position: absolute;
-    width: 85%;
-    height: 45%;
-    bottom: 0px;
+    margin-top: 40px;
+    text-align: center;
     z-index: 9;
+    height: inherit;
 }
 
 #video{
-    position: absolute;
-    bottom: 15px;
-    width: 100%;
-    height: auto;
-}
-
-#video-title{
-    position: absolute;
-    display: block;
-    margin: 0 auto;
-    top: 33px;
-    left: 0;
-    right: 0;
-    width: 50%;
-    text-align: center;
-    color: orange;
-    font-size: 17px;
-    background-color: rgb(30,38,43);
-    border: 3px solid;
-    border-image-source: linear-gradient(rgb(0, 171, 162), rgb(11, 89, 128));
-    border-image-slice: 1;
-}
-
-#video-title:hover{
-    color: rgb(0, 221, 210);
-    border-image-source: linear-gradient(rgb(0, 230, 218), rgb(16, 124, 179))
-}
-
-#tutorial:hover{
-    cursor: pointer;
+    width: 90%;
+    height: 70%;
 }
 
 #gage{
@@ -241,53 +204,80 @@ div#skill-desc {
 
 #button-container{
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    height: 50px;
-    border-bottom: 3px groove rgb(155,117, 86);
+    list-style: none;
+    padding: 0;
+    border-radius: 15px;
 }
 
 .button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 0 0 40%;
-    height:25px;
-    background-color: rgb(30,38,43);
-    border: 3px solid;
-    border-image-source: linear-gradient(rgb(0, 171, 162), rgb(11, 89, 128));
-    border-image-slice: 1;
+    flex: 1;
+    height: 35px;
+    line-height: 35px;
+    background-color: transparent;
     z-index: 9;
     font-size: 15px;
+    text-align: center;
     color: orange;
+}
+
+.overview li:nth-child(1), .skill li:nth-child(2), .video li:nth-child(3){
+    color: lightblue;
+    border-top: 2px solid lightblue;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.overview li:nth-child(2){
+    border-bottom-left-radius: 15px;
+    border-bottom: 2px solid lightblue;
+}
+.overview li:nth-child(3), .video li:nth-child(1){ border-bottom: 2px solid lightblue;}
+
+.skill li:nth-child(1){
+    border-bottom-right-radius: 15px;
+    border-bottom: 2px solid lightblue;
+}
+.skill li:nth-child(3){
+    border-bottom-left-radius: 15px;
+    border-bottom: 2px solid lightblue;
+}
+
+.video li:nth-child(2){
+    border-bottom-right-radius: 15px;
+    border-bottom: 2px solid lightblue;
 }
 
 .button:hover{
     cursor: pointer;
-    color: rgb(0, 221, 210);
-    border-image-source: linear-gradient(rgb(0, 221, 210), rgb(17, 130, 187));
+    color: lightblue;
 }
 
+#primary-container #arrows {
+    width: 13%;
+}
+
+#arrows{
+    position: absolute;
+    left: 0;
+    right: 4%;
+    bottom: 45%;
+    margin: 0 auto;
+}
 
 .right, .left{
-    position: absolute;
     border: solid white;
-    border-width: 0 12px 12px 0;
     display: inline-block;
+    border-width: 0 12px 12px 0;
     padding: 20px;
-    
 }
 .right {
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
-    top: 50%;
+    float: right;
 }
 
 .left {
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
-    right: 0;
-    bottom: 42%;
 }
 
 .right:hover, .left:hover{
